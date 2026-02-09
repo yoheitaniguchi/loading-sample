@@ -3,6 +3,8 @@ import { Search } from 'lucide-react';
 import { useLoading } from '../../context/LoadingContext';
 import styles from './SearchFilter.module.css';
 
+const SEARCH_ITEMS = Array.from({ length: 6 });
+
 const SearchFilter = () => {
     const { startLoading } = useLoading();
     const lastFocusTime = useRef(0);
@@ -15,11 +17,9 @@ const SearchFilter = () => {
         // 直前のローディングから十分時間が経っていない、かつ「同じ要素」へのフォーカス復帰の場合は無視
         // これにより、ユーザーが「別の要素」を素早くクリックした場合はブロックしないようにする
         if (index === lastFocusedIndex.current && now - lastFocusTime.current < 3500) {
-            console.log('Focus ignored due to recent loading completion (Restoration)');
             return;
         }
 
-        console.log('Focus triggered loading on:', e.target.name);
         // フォーカスされた要素を記録
         lastFocusedIndex.current = index;
         lastFocusTime.current = now;
@@ -52,7 +52,7 @@ const SearchFilter = () => {
         <div className={styles.container}>
             <div className={styles.grid}>
                 {/* 6 input fields */}
-                {[...Array(6)].map((_, i) => (
+                {SEARCH_ITEMS.map((_, i) => (
                     <div key={i} className={styles.inputGroup}>
                         <label htmlFor={`search-${i}`} className={styles.label}>検索項目 {i + 1}</label>
                         <input

@@ -50,10 +50,7 @@ export function LoadingProvider({ children }) {
 
             // 要素がまだDOMに存在するか確認してからフォーカス
             if (document.body.contains(el)) {
-                console.log("Restoring focus to:", el);
                 el.focus();
-            } else {
-                console.warn("Trigger element no longer exists in DOM");
             }
 
             // 参照をクリア
