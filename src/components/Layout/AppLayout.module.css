@@ -1,0 +1,176 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.header {
+    height: 60px;
+    background-color: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 100;
+}
+
+.menuButton {
+    background: none;
+    border: none;
+    margin-right: 15px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.mainWrapper {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #1e293b;
+    color: white;
+    transition: margin-left 0.3s ease;
+    margin-left: 0; /* デフォルト表示 */
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* 
+  Sidebar toggle logic:
+  If `isSidebarOpen` is false (default), we want it HIDDEN?
+  No, standard desktop usually defaults to OPEN.
+  However, the React state `isSidebarOpen` initializes to `false`.
+  If we want it visible by default, we should change React state to `true`,
+  OR change CSS meaning of `isSidebarOpen`.
+
+  Current React:
+  `className={`${styles.sidebar} ${isSidebarOpen ? styles.open : ''}`}`
+  
+  If I want "Burger menu hides it", it implies it starts visible.
+  If state is false, and I want it visible, then false = visible? That's confusing.
+  
+  Let's change the CSS so that:
+  - Default (.sidebar): Hidden
+  - Open (.sidebar.open): Visible
+
+  AND update AppLayout.jsx to default to `true` (Open).
+  
+  BUT user asked "Burger menu hides it".
+  If I start with `false` (Hidden) and click burger, it becomes `true` (Visible).
+  This is the opposite of "hides it" if we assume it starts visible.
+  
+  Strategy:
+  1. Modify CSS to support hiding via class.
+  2. I will actually leave .sidebar as is, but add a `.closed` class logic if I change JS?
+  
+  Actually, let's look at `AppLayout.jsx` again.
+  `const [isSidebarOpen, setIsSidebarOpen] = useState(false);`
+  
+  If I want it visible by default on desktop, I should change `useState(true)`.
+  Then clicking burger makes it `false` (removes .open class).
+  
+  So:
+  .sidebar { ... margin-left: -250px; ... } (Hidden by default)
+  .sidebar.open { margin-left: 0; } (Visible)
+  
+  This matches mobile logic too (transform).
+  
+  So I just need to:
+  1. Set .sidebar margin-left to -250px (hidden)
+  2. Set .sidebar.open margin-left to 0 (visible)
+  3. Change `useState(false)` to `useState(true)` in AppLayout.jsx.
+  
+  Let's do CSS first.
+*/
+
+.sidebar {
+    width: 250px;
+    background-color: #1e293b;
+    color: white;
+    transition: margin-left 0.3s ease, transform 0.3s ease;
+    margin-left: -250px; /* Default hidden on desktop if not open */
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sidebar.open {
+    margin-left: 0;
+}
+
+.navList {
+    list-style: none;
+    padding: 20px 0;
+}
+
+.navList li {
+    padding: 15px 25px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.navList li:hover {
+    background-color: #334155;
+}
+
+.navItemActive {
+    background-color: #2563eb;
+    font-weight: bold;
+}
+
+.content {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    /* Search, List, Commands */
+    height: 100%;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.searchSection {
+    padding: 20px;
+    background-color: white;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.listSection {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.commandSection {
+    padding: 15px 20px;
+    background-color: white;
+    border-top: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Mobile Responsive Sidebar */
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        height: 100%;
+        z-index: 50;
+        margin-left: 0; /* Reset margin for mobile, rely on transform */
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        margin-left: 0;
+    }
+}

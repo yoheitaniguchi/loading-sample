@@ -1,0 +1,69 @@
+.container {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.table thead {
+    background-color: #f8fafc;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #64748b;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+
+.thCheckbox,
+.tdCheckbox {
+    width: 40px;
+    text-align: center;
+    padding: 10px;
+}
+
+.tr {
+    border-bottom: 1px solid #e2e8f0;
+    transition: background-color 0.1s;
+    cursor: pointer;
+}
+
+.tr:hover {
+    background-color: #f1f5f9;
+}
+
+.selectedRow {
+    background-color: #eff6ff !important;
+    /* light blue 50 */
+}
+
+.td {
+    padding: 12px 15px;
+    color: #334155;
+}
+
+.productName {
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.price,
+.stock {
+    text-align: right;
+    font-family: monospace;
+    /* 数字を見やすく */
+}
